@@ -29,3 +29,27 @@
 
 # What would your total score be if everything goes exactly according to your strategy guide?
 
+file = open('day2-input.txt', 'r')
+strategies = file.read().strip().split('\n')
+totalScore = 0
+
+def increaseTotalScore(choice, currentScore, resultIncrement):
+    if choice == 'X':
+        currentScore = currentScore + resultIncrement + 1
+    elif choice == 'Y':
+        currentScore = currentScore + resultIncrement + 2
+    elif choice == 'Z':
+        currentScore = currentScore + resultIncrement + 3
+
+    return currentScore
+
+for strategy in strategies:
+    choices = strategy.split()
+    if (choices[0] == 'A' and choices[1] == 'X') or (choices[0] == 'B' and choices[1] == 'Y') or (choices[0] == 'C' and choices[1] == 'Z'):
+        totalScore = increaseTotalScore(choices[1], totalScore, 3)
+    elif (choices[0] == 'A' and choices[1] == 'Y') or (choices[0] == 'B' and choices[1] == 'Z') or (choices[0] == 'C' and choices[1] == 'X'):
+        totalScore = increaseTotalScore(choices[1], totalScore, 6)
+    elif (choices[0] == 'A' and choices[1] == 'Z') or (choices[0] == 'B' and choices[1] == 'X') or (choices[0] == 'C' and choices[1] == 'Y'):
+        totalScore = increaseTotalScore(choices[1], totalScore, 0)      
+
+print('The answer for 1st part is:', totalScore)
