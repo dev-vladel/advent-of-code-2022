@@ -53,3 +53,55 @@ for strategy in strategies:
         totalScore = increaseTotalScore(choices[1], totalScore, 0)      
 
 print('The answer for 1st part is:', totalScore)
+
+
+# --- Part Two ---
+# The Elf finishes helping with the tent and sneaks back over to you. "Anyway, the second column says how the round needs to end: X means you need to lose, Y 
+# means you need to end the round in a draw, and Z means you need to win. Good luck!"
+
+# The total score is still calculated in the same way, but now you need to figure out what shape to choose so the round ends as indicated. The example above now goes like this:
+
+# In the first round, your opponent will choose Rock (A), and you need the round to end in a draw (Y), so you also choose Rock. This gives you a score of 1 + 3 = 4.
+# In the second round, your opponent will choose Paper (B), and you choose Rock so you lose (X) with a score of 1 + 0 = 1.
+# In the third round, you will defeat your opponent's Scissors with Rock for a score of 1 + 6 = 7.
+# Now that you're correctly decrypting the ultra top secret strategy guide, you would get a total score of 12.
+
+# Following the Elf's instructions for the second column, what would your total score be if everything goes exactly according to your strategy guide?
+
+totalScorePartTwo = 0
+
+def increaseTotalScorePartTwo(choice, currentScore, resultIncrement):
+    if choice == 'A':
+        currentScore = currentScore + resultIncrement + 1
+    elif choice == 'B':
+        currentScore = currentScore + resultIncrement + 2
+    elif choice == 'C':
+        currentScore = currentScore + resultIncrement + 3
+
+    return currentScore
+
+for strategy in strategies:
+    choices = strategy.split()
+    if choices[1] == 'X':
+        if choices[0] == 'A':
+            totalScorePartTwo = increaseTotalScorePartTwo('C', totalScorePartTwo, 0)
+        elif choices[0] == 'B':
+            totalScorePartTwo = increaseTotalScorePartTwo('A', totalScorePartTwo, 0)
+        elif choices[0] == 'C':
+            totalScorePartTwo = increaseTotalScorePartTwo('B', totalScorePartTwo, 0)
+    elif choices[1] == 'Y':
+        if choices[0] == 'A':
+            totalScorePartTwo = increaseTotalScorePartTwo('A', totalScorePartTwo, 3)
+        elif choices[0] == 'B':
+            totalScorePartTwo = increaseTotalScorePartTwo('B', totalScorePartTwo, 3)
+        elif choices[0] == 'C':
+            totalScorePartTwo = increaseTotalScorePartTwo('C', totalScorePartTwo, 3)
+    elif choices[1] == 'Z':
+        if choices[0] == 'A':
+            totalScorePartTwo = increaseTotalScorePartTwo('B', totalScorePartTwo, 6)
+        elif choices[0] == 'B':
+            totalScorePartTwo = increaseTotalScorePartTwo('C', totalScorePartTwo, 6)
+        elif choices[0] == 'C':
+            totalScorePartTwo = increaseTotalScorePartTwo('A', totalScorePartTwo, 6)
+
+print('The answer for 2nd part is:', totalScorePartTwo)
