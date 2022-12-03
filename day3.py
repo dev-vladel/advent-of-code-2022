@@ -95,8 +95,8 @@ group_counter = 0
 group_priority_sum = 0
 
 while group_counter != len(rucksacks):
-    group_1, group_2, group_3 = rucksacks[group_counter], rucksacks[group_counter + 1], rucksacks[group_counter + 2]
-    group_priority_sum = group_priority_sum + get_char_priority(''.join(set(group_1).intersection(group_2).intersection(group_3)))
+    group_1, group_2, group_3 = set(rucksacks[group_counter]), set(rucksacks[group_counter + 1]), set(rucksacks[group_counter + 2])
+    group_priority_sum = group_priority_sum + get_char_priority(''.join(group_1.intersection(group_2).intersection(group_3)))
 
     group_counter += 3
 
