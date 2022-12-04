@@ -50,9 +50,13 @@ number_of_included_pairs = 0
 file= open('day4-input.txt', 'r')
 lines = file.read().strip().split('\n')
 
-def compare_pairs(a : int, b : int, c : int, d : int) -> bool:
+def compare_pairs(a : int, b : int, c : int, d : int, check_for_second_part : bool) -> bool:
     if a <= c and a <= d and b >= c and b >= d:
         return True
+    if check_for_second_part:
+        if (a <= c or a <= d) and (b >= c or b >= d):
+            return True
+
     return False
 
 for line in lines:
@@ -62,7 +66,37 @@ for line in lines:
     pair_two_start = int(pairs[1].split('-')[0])
     pair_two_end = int(pairs[1].split('-')[1])
 
-    if compare_pairs(pair_one_start, pair_one_end, pair_two_start, pair_two_end) or compare_pairs(pair_two_start, pair_two_end, pair_one_start, pair_one_end):
+    if compare_pairs(pair_one_start, pair_one_end, pair_two_start, pair_two_end, False) or compare_pairs(pair_two_start, pair_two_end, pair_one_start, pair_one_end, False):
         number_of_included_pairs += 1
 
+
 print('The answer for 1st part is:', number_of_included_pairs)
+
+
+# --- Part Two ---
+# It seems like there is still quite a bit of duplicate work planned. Instead, the Elves would like to know the number of pairs that overlap at all.
+
+# In the above example, the first two pairs (2-4,6-8 and 2-3,4-5) don't overlap, while the remaining four pairs (5-7,7-9, 2-8,3-7, 6-6,4-6, and 2-6,4-8) do overlap:
+
+# 5-7,7-9 overlaps in a single section, 7.
+# 2-8,3-7 overlaps all of the sections 3 through 7.
+# 6-6,4-6 overlaps in a single section, 6.
+# 2-6,4-8 overlaps in sections 4, 5, and 6.
+# So, in this example, the number of overlapping assignment pairs is 4.
+
+# In how many assignment pairs do the ranges overlap?
+
+
+number_of_included_pairs = 0
+
+for line in lines:
+    pairs = line.split(',')
+    pair_one_start = int(pairs[0].split('-')[0])
+    pair_one_end = int(pairs[0].split('-')[1])
+    pair_two_start = int(pairs[1].split('-')[0])
+    pair_two_end = int(pairs[1].split('-')[1])
+
+    if compare_pairs(pair_one_start, pair_one_end, pair_two_start, pair_two_end, True) or compare_pairs(pair_two_start, pair_two_end, pair_one_start, pair_one_end, True):
+        number_of_included_pairs += 1
+
+print('The answer for 2nd part is:', number_of_included_pairs)
