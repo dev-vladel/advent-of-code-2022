@@ -13,6 +13,7 @@
 # 2-8,3-7
 # 6-6,4-6
 # 2-6,4-8
+
 # For the first few pairs, this list means:
 
 # Within the first pair of Elves, the first Elf was assigned sections 2-4 (sections 2, 3, and 4), while the second Elf was assigned sections 6-8 (sections 6, 7, 8).
@@ -37,8 +38,31 @@
 
 # .23456...  2-6
 # ...45678.  4-8
+
 # Some of the pairs have noticed that one of their assignments fully contains the other. For example, 2-8 fully contains 3-7, and 6-6 is fully contained by 4-6. In pairs where 
 # one assignment fully contains the other, one Elf in the pair would be exclusively cleaning sections their partner will already be cleaning, so these seem like the most in need 
 # of reconsideration. In this example, there are 2 such pairs.
 
 # In how many assignment pairs does one range fully contain the other?
+
+number_of_included_pairs = 0
+
+file= open('day4-input.txt', 'r')
+lines = file.read().strip().split('\n')
+
+def compare_pairs(a : int, b : int, c : int, d : int) -> bool:
+    if a <= c and a <= d and b >= c and b >= d:
+        return True
+    return False
+
+for line in lines:
+    pairs = line.split(',')
+    pair_one_start = int(pairs[0].split('-')[0])
+    pair_one_end = int(pairs[0].split('-')[1])
+    pair_two_start = int(pairs[1].split('-')[0])
+    pair_two_end = int(pairs[1].split('-')[1])
+
+    if compare_pairs(pair_one_start, pair_one_end, pair_two_start, pair_two_end) or compare_pairs(pair_two_start, pair_two_end, pair_one_start, pair_one_end):
+        number_of_included_pairs += 1
+
+print('The answer for 1st part is:', number_of_included_pairs)
