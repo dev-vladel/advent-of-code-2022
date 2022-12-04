@@ -46,11 +46,21 @@
 # In how many assignment pairs does one range fully contain the other?
 
 number_of_included_pairs = 0
+number_of_overlapping_pairs = 0
 
 file= open('day4-input.txt', 'r')
 lines = file.read().strip().split('\n')
 
+def build_pair(line_split : str) -> list:
+    ''' Function for building pairs from initial line split '''
+    pair = []
+    pair.append(int(line_split.split('-')[0]))
+    pair.append(int(line_split.split('-')[1]))
+
+    return pair
+
 def compare_pairs(a : int, b : int, c : int, d : int, check_for_second_part : bool) -> bool:
+    ''' Function for verifiying, based on control variable, to check eiter intersection or overlapping of pairs'''
     if a <= c and a <= d and b >= c and b >= d:
         return True
     if check_for_second_part:
@@ -60,14 +70,15 @@ def compare_pairs(a : int, b : int, c : int, d : int, check_for_second_part : bo
     return False
 
 for line in lines:
-    pairs = line.split(',')
-    pair_one_start = int(pairs[0].split('-')[0])
-    pair_one_end = int(pairs[0].split('-')[1])
-    pair_two_start = int(pairs[1].split('-')[0])
-    pair_two_end = int(pairs[1].split('-')[1])
+    line_split = line.split(',')
+    pair_one = build_pair(line_split[0])
+    pair_two = build_pair(line_split[1])
 
-    if compare_pairs(pair_one_start, pair_one_end, pair_two_start, pair_two_end, False) or compare_pairs(pair_two_start, pair_two_end, pair_one_start, pair_one_end, False):
+    if compare_pairs(pair_one[0], pair_one[1], pair_two[0], pair_two[1], False) or compare_pairs(pair_two[0], pair_two[1], pair_one[0], pair_one[1], False):
         number_of_included_pairs += 1
+
+    if compare_pairs(pair_one[0], pair_one[1], pair_two[0], pair_two[1], True) or compare_pairs(pair_two[0], pair_two[1], pair_one[0], pair_one[1], True):
+        number_of_overlapping_pairs += 1
 
 
 print('The answer for 1st part is:', number_of_included_pairs)
@@ -86,17 +97,4 @@ print('The answer for 1st part is:', number_of_included_pairs)
 
 # In how many assignment pairs do the ranges overlap?
 
-
-number_of_included_pairs = 0
-
-for line in lines:
-    pairs = line.split(',')
-    pair_one_start = int(pairs[0].split('-')[0])
-    pair_one_end = int(pairs[0].split('-')[1])
-    pair_two_start = int(pairs[1].split('-')[0])
-    pair_two_end = int(pairs[1].split('-')[1])
-
-    if compare_pairs(pair_one_start, pair_one_end, pair_two_start, pair_two_end, True) or compare_pairs(pair_two_start, pair_two_end, pair_one_start, pair_one_end, True):
-        number_of_included_pairs += 1
-
-print('The answer for 2nd part is:', number_of_included_pairs)
+print('The answer for 2nd part is:', number_of_overlapping_pairs)
