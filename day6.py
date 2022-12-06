@@ -36,38 +36,59 @@
 
 # How many characters need to be processed before the first start-of-packet marker is detected?
 
-import string
+# --- Part Two ---
+# Your device's communication system is correctly detecting packets, but still isn't working. It looks like it also needs to look for messages.
 
-ASCII_LETTERS = list(string.ascii_letters)
+# A start-of-message marker is just like a start-of-packet marker, except it consists of 14 distinct characters rather than 4.
 
-def character_occurences(char: str) -> bool:
-    return ASCII_LETTERS.index(char) > -1
+# Here are the first positions of start-of-message markers for all of the above examples:
 
+# mjqjpqmgbljsphdztnvjfqwrcgsmlb: first marker after character 19
+# bvwbjplbgvbhsrlpgdmjqwftvncz: first marker after character 23
+# nppdvjthqldpwncqszvftbrmjlhg: first marker after character 23
+# nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg: first marker after character 29
+# zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw: first marker after character 26
+# How many characters need to be processed before the first start-of-message marker is detected?
 
-def main():
-    file = open('day6-input.txt', 'r')
-    contents = file.read()
-    first_marker = 4
+FIRST_PACKET_POSITION = 4
+FIRST_MESSAGE_POSITION = 14
 
+def packet_marker(sub_group_sum):
+    if sub_group_sum == 4:
+        return True
+    else:
+        return False
+
+        
+def find_marker_position(contents : str, marker : int) -> int:
     start_index = 0
-    packet_found = False
-    while packet_found == False:
-        step = 4
+    marker_found = False
+
+    while marker_found == False:
         sub_group_sum = 0
 
-        sub_group_slice = slice(start_index, start_index + step)
+        sub_group_slice = slice(start_index, start_index + marker)
         sub_group = contents[sub_group_slice]
         for character in sub_group:
             if sub_group.count(character) == 1:
                 sub_group_sum += 1
 
-        if sub_group_sum == 4:
-            packet_found = True
-            first_marker = start_index + step
+        if sub_group_sum == marker:
+            marker_found = True
+            return start_index + marker
 
         start_index += 1
         sub_group_sum = 0
 
-    print('The answer for 1st part is:', first_marker)
+
+def main():
+    file = open('day6-input.txt', 'r')
+    contents = file.read()
+
+    first_packet_marker_position = find_marker_position(contents, FIRST_PACKET_POSITION)
+    print('The answer for 1st part is:', first_packet_marker_position)
+
+    first_message_marker_position = find_marker_position(contents, FIRST_MESSAGE_POSITION)
+    print('The answer for 2nd part is:', first_message_marker_position)
 
 main()
