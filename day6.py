@@ -36,3 +36,38 @@
 
 # How many characters need to be processed before the first start-of-packet marker is detected?
 
+import string
+
+ASCII_LETTERS = list(string.ascii_letters)
+
+def character_occurences(char: str) -> bool:
+    return ASCII_LETTERS.index(char) > -1
+
+
+def main():
+    file = open('day6-input.txt', 'r')
+    contents = file.read()
+    first_marker = 4
+
+    start_index = 0
+    packet_found = False
+    while packet_found == False:
+        step = 4
+        sub_group_sum = 0
+
+        sub_group_slice = slice(start_index, start_index + step)
+        sub_group = contents[sub_group_slice]
+        for character in sub_group:
+            if sub_group.count(character) == 1:
+                sub_group_sum += 1
+
+        if sub_group_sum == 4:
+            packet_found = True
+            first_marker = start_index + step
+
+        start_index += 1
+        sub_group_sum = 0
+
+    print('The answer for 1st part is:', first_marker)
+
+main()
